@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAA6klEQVR42qVV0Q3EIAil27CS4/S/IzBRh+HHAby78hpquEYjeUkVhVdABaLtLwoJ69YMrCRUXjTDApPAMICEeERwQPkVdLwTMJwegLXzw823No8HxdN8icKG6Pw4EBAMUjdOJ9xfArERyDKBXAQQl/AjKCmCQncA54W9uVSbnU21vUtidQlB2GSH6ZcCX1M2Aju28/52I+GPYGRlhQlWXaoPQ1+lXnR296tiDg9cmiVA1Nird66AiRBCJjrMJREakYA1HiPU/BhjEh0k6YuUvMrpx5R+zsmCki5p+aKaL+v5xpJvbfnmmm3vHwHeax0GY2/+AAAAAElFTkSuQmCC">
+  
+  <title>Consider cross-origin isolation!</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;800&family=Roboto+Slab:wght@100;500&display=swap" rel="stylesheet" crossorigin>
+  <style>
+    body, html {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      background: black;
+      color: white;
+      font: 100 40px/1.2 'Roboto Slab', sans-serif;
+      margin: 0 0 40px 0;
+      padding: 40px;
+      text-align: right;
+    }
+      h1 span:last-child {
+        font-weight: 500;
+      }
+
+    h2 {
+      font: 800 24px/1.2 'Open Sans', sans-serif;
+      margin: 0 auto 20px;
+      max-width: 750px;
+      padding: 0 2ch;
+    }
+      h2 code {
+        color: #07A;
+      }
+
+    h3 {
+      font: 800 18px/1.2 'Open Sans', sans-serif;
+      margin: 0 auto 20px;
+      max-width: 750px;
+      padding: 0 2ch;
+      text-align: right;
+    }
+
+      h2 a, h2 a:visited, 
+      h3 a, h3 a:visited {
+        margin-right: -2ch;
+        text-decoration: none;
+        font-weight: 400;
+        color: #FFF;
+      }
+      h2 a, h2 a:visited { margin-left: -24px; margin-right: 4px; }
+
+      h2:hover a, h3:hover a {
+        color: #99F;
+      }
+
+    hr {
+      margin: 3em auto;
+      max-width: 750px;
+    }
+
+    p, ul {
+      font: 18px/1.2 'Open Sans', sans-serif;
+      margin: 0 auto 20px;
+      max-width: 750px;
+      padding: 0 2ch;
+    }
+
+    li {
+      margin: 0 0 20px 20px;
+    }
+
+    pre {
+      margin: 0 auto 20px;
+      padding: 20px 8px 20px 20px;
+      font: 24px/1.2 monospace;
+      max-width: 710px;
+      white-space: normal;
+      text-align: center;
+      background: #FCFAEE;
+      border: 0 solid #E0CB52;
+      border-width: 0 0 0 0.5em;
+    }
+
+    .header {
+      color: #905;
+    }
+
+    .value {
+      color: #07a;
+    }
+
+    .tldr {
+      background: #E9FBE9;
+      border: 0 solid #52E052;
+      border-width: 0 0 0 0.5em;
+      padding: 20px;
+      max-width: 710px;
+      margin: 0 auto 20px;
+    }
+      .tldr code {
+        display: block;
+        margin: 12px 0;
+        text-align: left;
+        font-size: 24px;
+      }
+
+    footer {
+      background: black;
+      color: white;
+      margin: 0;
+      padding: 1ch 2ch;
+      font: 15px/1.4 'Open Sans', sans-serif;
+      text-align: right;
+    }
+      footer a, footer a:visited {
+        font-family: monospace;
+        color: #52cbff;
+      }
+  </style>
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@mikewest">
+  <meta name="og:title" content="Consider cross-origin isolation.">
+  <meta name="description" content="Side-channel attacks are bad. Defend your sites with `Cross-Origin-Opener-Policy`, and `Cross-Origin-Embedder-Policy`.">
+  <meta name="og:description" content="Side-channel attacks are bad. Defend your sites with `Cross-Origin-Opener-Policy`, and `Cross-Origin-Embedder-Policy`.">
+  <!--<meta name="og:image" content="https://resourcepolicy.fyi/card.png"> -->
+</head>
+<body>
+  <article>
+  <h1>
+    <span>Consider deploying</span><br>
+    <span>Cross-Origin Isolation</span>
+  </h1>
+
+  <aside class="tldr">
+    <p>
+      <strong>TL;DR:</strong>
+      
+      Side-channel attacks are <a href="https://meltdownattack.com/">not</a> <a href="https://github.com/xsleaks/xsleaks">good</a>.
+      Cross-origin isolation can mitigate their impact, making it more difficult for attackers to gain access to a victim origin's data. To opt a document into cross-origin isolation, add the following headers to its response:
+
+      <code><span class="header">Cross-Origin-Opener-Policy</span>: <span class="value">same-origin</span></code>
+      <code><span class="header">Cross-Origin-Embedder-Policy</span>: <span class="value">require-corp</span></code>
+    </p>
+  </aside>
+
+  </article>
+  <footer>
+    Typos? Mistakes? Poke at <a href="https://github.com/mikewest/isolated.website">mikewest/isolated.website</a>.
+  </footer>
+</body>
+</html>
