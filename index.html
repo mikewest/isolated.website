@@ -104,12 +104,6 @@
       max-width: 710px;
       margin: 0 auto 20px;
     }
-      .tldr code {
-        display: block;
-        margin: 12px 0;
-        text-align: left;
-        font-size: 24px;
-      }
 
     footer {
       background: black;
@@ -139,17 +133,47 @@
     <span>Cross-Origin Isolation</span>
   </h1>
 
-  <aside class="tldr">
+  <section class="tldr">
     <p>
-      <strong>TL;DR:</strong>
-      
-      Side-channel attacks are <a href="https://meltdownattack.com/">not</a> <a href="https://github.com/xsleaks/xsleaks">good</a>.
-      Cross-origin isolation can mitigate their impact, making it more difficult for attackers to gain access to a victim origin's data. To opt a document into cross-origin isolation, add the following headers to its response:
-
-      <code><span class="header">Cross-Origin-Opener-Policy</span>: <span class="value">same-origin</span></code>
-      <code><span class="header">Cross-Origin-Embedder-Policy</span>: <span class="value">require-corp</span></code>
+      <strong>TL;DR:</strong> Please isolate your web application from other origins, thereby
+      mitigating the risk of side-channels that can leak your users' data to attackers. At the
+      moment, this boils down to three recommendations:
     </p>
-  </aside>
+    <ol>
+      <li><p><strong>Break document-level side-channels</strong> by sending <code><span class="header">Cross-Origin-Opener-Policy</span>: <span class="value">same-origin</span></code> and <code><span class="header">Content-Security-Policy</span>: <span class="value">frame-ancestors 'self'</span></code> along with your origin's documents.</p></li>
+      <li><p><strong>Break subresource-level side-channels</strong> by sending <code><span class="header">Cross-Origin-Resource-Policy</span>: <span class="value">same-origin</span></code> and <code><span class="header">X-Content-Type-Options</span>: <span class="value">nosniff</span></code> along with responses containing data.</p></li>
+      <li><p><strong>Break process-level side-channels</strong> by sending <code><span class="header">Cross-Origin-Embedder-Policy</span>: <span class="value">require-corp</span></code> in addition to the <code><span class="header">Cross-Origin-Opener-Policy</span></code> header noted above.</p></li>
+    </ol>
+  </section>
+      
+      
+  <p>Side-channel attacks are <a href="https://meltdownattack.com/">not</a> <a href="https://github.com/xsleaks/xsleaks">good</a>. Cross-origin isolation can mitigate their impact, making it more difficult for attackers to gain access to a victim origin's data.</p>
+
+  <h2 id="coop">Limit cross-window communication</h2>
+
+  <pre><code><span class="header">Cross-Origin-Opener-Policy</span>: <span class="value">same-origin</span></code></pre>
+
+  <p>TODO</p>
+
+  <h2 id="csp">Limit documents' embeddability</h2>
+
+  <pre><code><span class="header">Content-Security-Policy</span>: <span class="value">frame-ancestors 'self'</span></code></pre>
+  
+  <p>TODO</p>
+
+  <h2 id="corp">Limit your resources' usage by others</h2>
+
+  <pre><code><span class="header">Cross-Origin-Resource-Policy</span>: <span class="value">same-origin</span></code></pre>
+
+  <pre><code><span class="header">X-Content-Type-Options</span>: <span class="value">nosniff</span></code></pre>
+
+  <p>TODO</p>
+
+  <h2 id="coep">Use only consenting resources</h2>
+  
+  <pre><code><span class="header">Cross-Origin-Embedder-Policy</span>: <span class="value">require-corp</span></code></pre>
+
+  <p>TODO</p>
 
   </article>
   <footer>
